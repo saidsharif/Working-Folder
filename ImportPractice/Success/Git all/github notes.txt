@@ -1,0 +1,28 @@
+firstly create a repository in github then in the terminal -
+git init
+
+git remote add origin https://github.com/saidsharif/hubpractice.git   // it will add the folder to the github. the full address is stored in the word origin
+
+git push -u origin master //it will push items to github repository 
+
+git push    // after 1st time you can simply use git push
+
+git pull origin master // it will pull if somebody update the repository
+
+git checkout -b relax // here relax is new branch  , do edit , add , commit
+
+git push -u origin relax // here pushing to the new branch relax instead of master . from github drop down i can choose all the branch and see what's in their.
+
+
+go to the parent directory on local machine cd . .
+then mkdir new folder
+cd new folder
+git clone https://......     // it needs to do to bring all the commit push actions in the folder
+
+Fork: when i want to work with other's repository in github then press fork option , it will clone that repository to my github and clone it in my local machine.
+
+after making edit and after push it to my fork repository then I can make a pull request to the person to update his repo by my editing . and he can merge the editing with his repository if he likes.
+
+When MANY people needs to work in the same project -> then go to setting , manage access, then invite a collaborator and give him priviledge.
+
+

@@ -1,0 +1,29 @@
+git init //initializing a folder as git
+
+git config --global user.name “Sharif” //setting username
+
+
+git config --global user.email “coderzsharif@gmail.com” //setting email
+
+ls -a // to see the .git
+
+git status // to see status
+
+touch index.html // creating file index.html
+
+git add index.html //putting the file in staging area before commit
+
+git log // history of commit
+
+git add . // adding all files in the status , which may have edited
+
+git checkout 03409a.. // here 03409a.. it is the commit hexa number of a commit , got from 'git log'command . when we will checkout with the hexa number which is  previous of this 03409a.. number then all the editing after that hexa number will be gone .
+
+git branch // to watch at which branch
+
+git branch crazycolor // edit or add anything in this branch or copy. then add and commit.
+
+git checkout crazycolor //when checkout the branch all edit of that branch will be shown.
+
+git merge crazycolor  // it will merge crazycolor with current branch  , if there is conflict , edit it in file and the git add . then commit.
+
