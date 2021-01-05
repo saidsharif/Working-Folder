@@ -1,0 +1,24 @@
+1.Ajax
+2.Database keys
+3.Data show from database
+
+
+
+1.Ajax
+AJAX = Asynchronous JavaScript And XML. AJAX is not a programming language. AJAX just uses a 
+combination of: A browser built-in XMLHttpRequest object (to request data from a web server) JavaScript and 
+HTML DOM (to display or use the data)
+
+2.Database keys
+All the keys of database https://www.c-sharpcorner.com/UploadFile/f0b2ed/types-of-keys-in-database/
+a table can have maximum one primary key.
+Candidate key: if a collumn or set-of-collumn data has uniqeness then its a candidate key and can be candidate for primary key.
+Primary key  : A Primary key uniquely identifies each record in a table
+Alternate keys: Alternate keys are candidate keys that are not selected as primary key. Alternate key can also work as a primary key. Alternate key is also called “Secondary Key”.
+Uniqe keys : Difference between primary and unique is , unique can have null values and fields are of non clustered index.
+Composite key: Composite key is combination of more than one attribute that identify each record. it can be primary key.
+Foreign key: Foreign key is used to generate the relationship between the tables. Foreign Key is a field in database table that is Primary key in another table. A foreign key can accept null and duplicate value.
+
+
+3.Data show from database
+Using 3 procedure we can show data from database. a)showing the table b)we can create View by multiple table c)we can use store procedure (we use lambda expressing in store procedure)

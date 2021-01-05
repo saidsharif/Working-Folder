@@ -1,0 +1,619 @@
+
+************************to design button :
+
+************************to go to root by click in logo :
+
+************************to make horizontal line  :
+
+************************basic vue file  :
+
+************************  :table in vue with for loop
+************************  : make bollean value yes or no with if else
+
+************************  : filter number to add prefix and make round value.
+
+
+1. after install cmder, run as adminsistrator, and run .\cmder.exe /REGISTER ALL ,to get in right button of any folder.
+
+
+mkdir BolarCoffe
+cd BolarCoffe
+dotnet --version
+vue --version
+psql --version
+
+**error: 'psql' is not recognized as an internal or external command, operable program or batch file.
+**solution: goto "edit the system environment variables" ,go environment variables, dclick in path-which is in lower window below OS Windows NT,then pres new , then paste the path of upto bin folder in c programfiles postgreSql\11\bin\, then ok , and reopen the cmder.
+
+vue create bolarcoffe.frontend //all will be lowercase
+
+get the arrow in manually select features and enter
+
+select by space bar, babel,typescript, router, vuex, css, linter,unit testing
+
+version may select 2 or 3
+
+use class-style component syntax y enter
+
+use babel alongside type .... y enter
+
+use history mood ... y enter
+
+select node-saas
+
+>ESLint + Prettier enter
+
+lint and fix on commit
+
+jest 
+
+In dedicated config files
+
+...preset for future project.. yes
+
+Save preset as: bolar
+
+cd bolarcoffe.frontend
+
+
+npm run serve  // instead of yarn serve
+
+
+Error: Cannot find module @vue\cli-service\bin\vue-cli-service.js
+Solution : check whether any sign like & in folder-name , remove all the sign and then run again npm run serve
+
+copy paste the address in browser to see the app running
+
+ctrl+c in cmder
+
+cd . .
+
+dotnet new sln //solution file creation
+
+dotnet new webapi -o BolarCoffe.web //bolarcoffe is name
+
+dotnet new classlib -f netcoreapp3.1 -o BolarCoffe.Data
+
+dotnet new classlib -f netcoreapp3.1 -o BolarCoffe.Services
+
+dotnet new xunit -f netcoreapp3.1 -o BolarCoffe.Test // xunit for testing
+
+dotnet sln add BolarCoffe.Data
+
+dotnet sln add BolarCoffe.Services
+  
+dotnet sln add BolarCoffe.Test
+
+dotnet sln add BolarCoffe.web
+
+cd BolarCoffe.web
+
+
+dotnet run
+
+at browser https://localhost:5001/Weatherforecast  //api running and json responsing. weatherforecast is demo or prototype api
+
+in VS right clk BolarCoffe.Data , manage nuget pkg
+install 
+
+microsoft.aspnetcore.identity
+microsoft.aspnetcore.identity.entityframeworkcore
+microsoft.entityframeworkcore
+npgsql.entityframeworkcore.postgresql
+
+cd ..
+cd.. BolarCoffe.frontent
+ls -la // to see all hiddenfile
+
+rm -rf .git //to remove git from frontent
+cd ..
+git init
+
+vim .gitignore //to ignore unnecessary folder in git
+
+here type: **/node_modules/**
+.DS_Store
+**/.workspace.xml
+**/bin
+.vs
+.idea
+
+then press esc and typr : colon, then write wq then enter
+
+git status
+git add -A // to add all the files
+git status
+git commit -m "initial commit"
+
+ vim ~/.gitconfig
+
+git remote add origin https://github.com/saidsharif/BolarCoffe.git
+git push -u origin master
+
+add new class in datalayer SolarDbContext //with dbcontext we work with database
+copy paste
+--public class SolarDbContext : IdentityDbContext //here solardbcontext is inherited from IdentityDbContext base class
+
+--public SolarDbContext(DbContextOptions options) : base(options) //constructor with dbcontextoptions and passes it to base class. its responsible for the type of database we are going to handle
+
+--public virtual DbSet<Customer> Customers { get; set; } //dbset of type customer and call customers . dbset type is customer.
+
+--// entity framework see the dbcontext and when see the dbset then create table and work with that table with the dbset.
+
+add folder Models and add Customer classfile
+--//between customer and customerAddress class there are foreign key rel.
+
+go to startup ,in the configureservices  below services.AddControllers(); add 
+services.AddDbContext<SolarDbContext>(
+               opts => {
+                   opts.EnableDetailedErrors();
+                   opts.UseNpgsql(Configuration.GetConnectionString("solar.dev"));
+               });
+
+go to appsetting.development.json which is below appsetting.json
+
+it will be like -
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  
+  "ConnectionStrings": {
+    "solar.dev": "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=solardev;"  //here update connection string
+  }
+}
+
+--psql 
+--psql user=postgres
+--alter user postgres with password '1234';
+--create user postgres with password '1234';
+--CREATE DATABASE solardev;  //here semicolon is must
+--GRANT ALL PRIVILEGES ON DATABASE solardev TO postgres;
+--\c solardev postgres; // to be connected to database solardev as user postgres
+--\q 
+
+add nuget packages to bolarCoffe.web -
+-microsoft.entityframeworkcore.design
+-microsoft.entityframeworkcore.tools
+-microsoft.entityframeworkcore
+-microsoft.aspnetcore.mvc.newtonsoftjson
+-newtonsoft.json
+
+cd BolarCoffe.Data
+dotnet ef --startup-project ../BolarCoffe.web migrations add amigration //it must be executed from .Data directory
+--error then run - dotnet tool install --global dotnet-ef, then again run dotnet ef --startup-project ../BolarCoffe.web migrations add amigration
+dotnet ef --startup-project ../BolarCoffe.web database update
+
+--psql user=postgres
+--\c solardev postgres
+--\dt
+--SELECT * FROM "CustomerAddresses";
+
+
+// in order to automate processes , we are going to make file
+
+
+vim Makefile
+then press i to write
+1 # Project Variables
+ PROJECT_NAME ?= BolarCoffe // vim (short notes): press esc , the use yy to copy and p to paste , d to cut, i to go to insert mood. :wq (colon wq) for save and quit.
+ ORG_NAME ?= BolarCoffe
+ REPO_NAME ?= BolarCoffe
+
+ .PHONY: migrations db // phony is defining the targets. here our target is migrations and db. to execute migrations and db  
+
+ migrations: 
+           cd ./BolarCoffe.Data && dotnet ef --startup-project ../BolarCoffe.web/ migrations add $(mname) && cd ..
+db:
+   
+           cd ./BolarCoffe.Data && dotnet ef --startup-project ../BolarCoffe.web/ database update && cd ..
+
+
+
+git add -A
+git commit -m "Add makefile"
+
+//go to soln
+
+in model add item Product.cs, ProductInventory.cs, ProductInventorySnapshot.cs, SalesOrder, SalesOrderItem.cs 
+copy and pasting variable of tables with foreign key, and adding them in BolarDbcontext.cs.
+
+--build , error:cs0053 Inconsistent accessibility to a <List>
+--sol: any public missing , make public the classes.
+
+
+-- its not working . in cmder : make migrations mname=ProductInventorySales // here mname varriable is defined in vm , makefile
+-- needs to work with vim
+run in cmder :  cd ./BolarCoffe.Data && dotnet ef --startup-project ../BolarCoffe.web/ migrations add $(mname) && cd ..
+                cd ./BolarCoffe.Data && dotnet ef --startup-project ../BolarCoffe.web/ database update && cd ..
+
+git add .
+git commit -m "add entity model"
+git push -u origin master
+
+
+--Section 1.8
+
+in the web project delete weatherforecastcontroller which is in controller
+-- we inject service in controller to fetch data
+
+in web in controller add ProductController.cs class file
+write attribute [ApiController] attribute , so that ef will understand that it is a api controller class.
+
+// ActionResult returns json or view etc.
+// in a controller's ActionResult method , controller handaling http request and the method providing service to manipulate data.
+//here IProductService is the interface , dependency injection , what will handle all about product service, here only abstraction not implementation. here two instance of IProductService destroying the dependency. useful for unit test . here a mock of IproductService is ok for unit test.
+
+go to service , add a folder Product, and add an interface  IProductService
+// interface are basically the contract that define the behaviors of classes which will be implemented.
+
+in the service layer add reference BolarCoffe.Data
+in the web layer add reference BolarCoffe.Services
+
+add a ServiceResponse class in service // here T is type of Object ,ex:customer.
+
+
+in the startup.cs add AddTransient in the ConfigureServices
+services.AddTransient<IProductService, ProductService>();
+
+in the service layer product folder add ProductService class and implement interface in error sign.
+here initialize the dbContext with constructor so that it can handle dbcontext.
+in var newInventory Product=product , here Product directly targeting Product table by entity framework.
+
+--Section 1.9
+
+
+in the web part , 
+
+set a debugger in controler , actionresult getproduct ()method.
+ in properties in launchSetting.json , change the launchUrl:"/api/product",
+and remove the iisexpress braches
+then run the debug in the right click of web part
+-- insert some data in database
+in cmder: psql -h localhost -p 5432 -d solardev -U postgres //here -h host, -p port , -d database -U username . don't give password here
+
+\dt //it will show all the tables
+
+-- to put data in Products table 
+select * from "Products";
+
+in pgadmin 4 run the queries
+
+select * from "Products";
+Insert into "Products" ("CreatedOn","UpdatedOn","Name","Description","Price","IsTaxable","IsArchived") values 
+(NOW (),NOW (),'10 lb DarkRoast','10 lb bag of darkroast coffee beans',100,true,false),
+(NOW (),NOW (),'20 lb DarkRoast','20 lb bag of darkroast coffee beans',200,true,false),
+(NOW (),NOW (),'30 lb DarkRoast','30 lb bag of darkroast coffee beans',300,true,false),
+(NOW (),NOW (),'10 lb LightRoast','10 lb bag of LightRoast coffee beans',20,true,false),
+(NOW (),NOW (),'10 lb LightRoast','10 lb bag of LightRoast coffee beans',40,true,false),
+(NOW (),NOW (),'10 lb LightRoast','10 lb bag of LightRoast coffee beans',60,true,false);
+
+and debug the app again , -- it will show the product data in the browser.
+
+
+--Section 1.10
+
+create folder ViewModels under web part
+create class ProductModel 
+create DTO from the data part to the destination viewModel folder //data transfer object //install dto.writer_2.6.vsix //Data transfer object (DTO) describes “an object that carries data between processes” (Wikipedia) or an “object that is used to encapsulate data, and send it from one subsystem of an application to another”
+
+create folder Serialization under web part
+create class ProductMapper //purpose is to convert data model into view model and vice versa.
+
+
+in the CustomerService in GetAllCustomer method ->
+
+return _db.Customers
+                .Include(customer => customer.PrimaryAddress)
+                .OrderBy(customer => customer.LastName)
+                .ToList();
+
+
+--Section 1.11
+
+
+in the startup.cs add the transients 
+            services.AddTransient<IInventoryService, InventoryService>();
+//also add all the transients to get all the services.
+
+
+--Section 1.12
+
+remove weatherforecast.cs
+  
+serialize part is to serialize between data model and view model.
+
+in product controller actionresult archiveproduct (httpPatch) implementation
+
+create new class in controller ordercontroller.cs
+
+creating class InvoiceModel in viewmodel which has been used in ordercontroller.
+
+in serialization we are making the class OrderMapper it serialize between viewmodel and datamodel 
+
+ordermodel in viewmodel
+
+CustomerModel in viewmodel
+
+CustomerMapper in mapper
+
+
+--Section 1.13
+ 
+although we don't have frontend yet but we are using Postman for testing.
+
+
+in postman -> +new -> collection -> name = bolarcoffe api-> create
+run the app , and copy the url of a get request
+
+in right + click, then make a get request, then paste url , not working , in setting ssl certificate verification off. then send
+
+we can seve this by save button at the right , in our directory.
+for post test in body, raw ,in dropdown mustbe json, -> write table collumn name with value like , {"First Name":"Hello",......,....}
+one format is below , select post , configure body,raw,json then send . then check get.
+
+{
+    "FirstName": "dive",
+    "LastName": "din",
+    "PrimaryAddress":{
+        "AddressLine1": "100obc",
+        "AddressLine2": "Apt005",
+        "City": "Dubai",
+        "State": "MS",
+        "PostalCode": "012",
+        "Country": "us"
+    }
+}
+
+
+
+--Section 1.14
+completion of Api has been done.
+ 
+
+--Section 1.15
+
+in package.json file -> metadata of project. name , some shortcut  essential code.
+
+vue. open cmder at bolarcoffe.frontent then 
+npm run serve 
+install vue.js devtool in chrome
+in details of this extention tik the allow access to file urls , then close and reopen chrome
+
+
+--Section 1.17
+
+************************to design button : 
+
+in solarbutton , to bind conditional class dynamically, 
+
+add this part to the button :class="['solar-button',{'full-width':isFullWidth}]" //here solar-button is the class , and full-width is the conditional class.
+
+declare isFullWidth as a property.
+
+ @Prop({ required: false, type: Boolean, default: false })
+        isFullWidth?: boolean;
+
+
+in the style: 
+<style scoped lang="scss">
+    @import "@/scss/global.scss";
+    .full-width{
+        display:block;
+        width:100%
+    }
+</style>
+
+
+then use isFullWidth where solar-button is used 
+
+<solar-button id="menuInventory" :link="'/inventory'" is-full-width>
+            Inventory
+        </solar-button>
+
+then add solar-button class scss to style the button more
+
+.solar-button {
+  background: lighten($solar-blue, 10%);
+  color: white;
+  padding: 0.8rem;
+  transition: background-color 0.5s;
+  margin: 0.3rem 0.2rem;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 100px;
+  border: none;
+  border-bottom: 2px solid darken($solar-blue, 20%);
+  border-radius: 3px;
+
+  &:hover {
+    background: lighten($solar-blue, 20%);
+    transition: background-color 0.5s;
+  }
+
+  &:disabled {
+    background: lighten($solar-blue, 15%);
+    border-bottom: 2px solid lighten($solar-blue, 20%);
+  }
+
+  &:active {
+    background: $solar-yellow;
+    border-bottom: 2px solid lighten($solar-yellow, 20%);
+  }
+}
+
+
+************************to go to root by click in logo :
+
+get where the logo image , bring it inbetween <router-link to ="/"><router-link> tag 
+
+
+************************to make horizontal line  :
+
+<hr/> horizontal line break, it will show a horizontal line
+
+in the app.vue add scss , 
+hr {
+   border: 1px solid #eee;
+   margin : 1rem 0;
+}
+
+************************basic vue file  :
+basic vue file 
+
+<template>
+    <div class="inventory-container">
+        <h1 id="inventoryTitle">
+            Inventory Dashboard
+        </h1>
+    </div>
+</template>
+
+<script lang="ts">
+    import { Component, Vue } from 'vue-property-decorator';
+    @Component({
+        name: 'Inventory',
+        components: {}
+    })
+    export default class Inventory extends Vue {
+
+    }
+</script>
+
+************************  :table in vue with for loop
+
+
+<table id="inventoryTable" class="table">
+            <tr>
+                <th>Item</th>
+                <th>quantity on-hand</th>
+                <th>Unit price</th>
+                <th>Taxable</th>
+                <th>Delete</th>
+            </tr>
+            <tr v-for="item in inventory" :key="item.id">
+                <td>
+                    {{item.product.name}}
+                </td>
+                <td>
+                    {{item.quantityonhand}}
+                </td>
+                <td>
+                    {{item.product.price}}
+                </td>
+                <td>
+                    {{item.product.IsTaxable}}
+                </td>
+               
+                <td>
+                    <div>
+                        X
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+import { IProductInventory } from "@/types/Product";
+
+export default class Inventory extends Vue {
+        inventory: IProductInventory[] = [{
+            id: 1,
+            product: { name: 'some procut', description: 'Good stuff', price: 100, createdOn: new Date(), updatedOn: new Date(), IsTaxable: true, isArchived: false },
+            quantityonhand: 100,
+            idealQuantity:5
+        }];
+    }
+ in Product.d.ts //is called decorator typescript file 
+
+export interface IProduct {
+    id: number;
+    createdOn: Date;
+    updatedOn: Date;
+    name: string;
+    description: string;
+    price: number;
+    IsTaxable: boolean;
+    isArchived: boolean;
+
+}
+
+export interface IProductInventory {
+
+    id: number;
+    product: IProduct;
+    quantityonhand: number;
+    idealQuantity: number;
+}
+ 
+in global.scss put the following design
+
+
+************************  : make bollean value yes or no with if else
+
+ <td>
+ <span v-if="item.product.IsTaxable">
+    Yes
+  </span>
+  <span v-else>
+    No
+  </span>
+                    
+  </td>
+
+************************  : filter number to add prefix and make round value.
+
+
+
+ <td>
+ {{item.product.price | filter}}
+ </td>
+
+in main.ts
+
+Vue.filter('filter', function (number: number) {
+    if (isNaN(number)) {
+        return '_';
+    }
+    return '$' + number.toFixed(2);   
+
+});
+
+
+--Section 1.17
+
+
+
+
+ <div class="inventory-actions">
+      <solar-button @button:click="showNewProductModal" id="addNewBtn">
+        Add New Item
+      </solar-button>
+      <solar-button @button:click="showShipmentModal" id="receiveShipmentBtn">
+        Receive Shipment
+      </solar-button>
+    </div>
+
+
+ import SolarButton from "@/components/SolarButton.vue"
+    @Component({
+        name: 'Inventory',
+        components: { SolarButton }
+    })
+
+
+ </table>
+        <new-product-modal v-if ="isNewProductVisible" />
+        <shipment-modal v-if ="isShipmentVisible" />
+    </div>
+
+
+export default class Inventory extends Vue {
+
+        isNewProductVisible: boolean = false;
+        isShipmentVisible: boolean = false;

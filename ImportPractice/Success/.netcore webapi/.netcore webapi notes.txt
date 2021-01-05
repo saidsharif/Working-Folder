@@ -1,0 +1,14 @@
+error : Add an implementation of 'IDesignTimeDbContextFactory<ServicesDbContext>' to the project
+
+public class mywebapiContextDbFactory : IDesignTimeDbContextFactory<mywebapiContext>
+    {
+        mywebapiContext IDesignTimeDbContextFactory<mywebapiContext>.CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<mywebapiContext>();
+            optionsBuilder.UseNpgsql<mywebapiContext>("User ID = postgres;Password=1234;Server=localhost;Port=5432;Database=MyCoreApi.Dev;Integrated Security=true; Pooling=true;");
+
+            return new mywebapiContext(optionsBuilder.Options);
+           
+        }
+    }
+//here mywebapi is the project or namespace

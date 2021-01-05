@@ -1,0 +1,11 @@
+we inject service in controller to fetch data
+
+// ActionResult returns json or view etc.
+// in a controller's ActionResult method , controller handaling http request and the method providing service to manipulate data.
+
+create folder ViewModels under web part
+create class ProductModel 
+create DTO from the data part to the destination viewModel folder //data transfer object //install dto.writer_2.6.vsix //Data transfer object (DTO) describes “an object that carries data between processes” (Wikipedia) or an “object that is used to encapsulate data, and send it from one subsystem of an application to another”
+
+create folder Serialization under web part
+create class ProductMapper //purpose is to convert data model into view model and vice versa.
